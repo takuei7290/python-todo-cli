@@ -3,14 +3,19 @@ import json
 import os
 from datetime import datetime
 
-if sys.argv[1]=="add":
-
+def load_tasks():
     if os.path.exists("tasks.json"):
-        with open("tasks.json", "r", encoding="utf-8") as f:
-            tasks = json.load(f)
+            with open("tasks.json", "r", encoding="utf-8") as f:
+                tasks = json.load(f)
+            return tasks
 
     else:
         tasks=[]
+        return tasks
+
+if sys.argv[1]=="add":
+
+    tasks=load_tasks()
 
     new_task={
         "id": len(tasks) + 1 ,
@@ -25,13 +30,7 @@ if sys.argv[1]=="add":
 
 elif sys.argv[1]=="list":
 
-    if os.path.exists("tasks.json"):
-            with open("tasks.json", "r", encoding="utf-8") as f:
-                tasks = json.load(f)
-
-    else:
-            tasks=[]           
-
+    tasks=load_tasks()         
 
     if len(tasks)==0:
         print("タスクはありません")
