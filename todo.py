@@ -41,3 +41,19 @@ elif sys.argv[1]=="list":
                 print(str(task["id"]) + ". " + task["content"] + " [完了]")
             else:
                 print(str(task["id"]) + ". " + task["content"] + " [未完了]")
+
+elif sys.argv[1]=="done":
+
+    tasks=load_tasks()
+
+    found=False
+    for task in tasks:
+        if str(task["id"])==sys.argv[2]:
+            task["done"]=True
+            with open("tasks.json", "w", encoding="utf-8") as f:
+                json.dump(tasks, f, ensure_ascii=False)
+            print("完了にしました")
+            found=True
+
+    if found==False:
+        print("該当するタスクがありません")
