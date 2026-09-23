@@ -20,6 +20,11 @@ def load_tasks():
         tasks=[]
         return tasks
 
+def save_tasks(tasks):
+    with open("tasks.json", "w", encoding="utf-8") as f:
+        json.dump(tasks, f, ensure_ascii=False)
+
+
 if len(sys.argv)<2:
     print("コマンドがありません。add / list / done / delete のいずれかを指定してください")
     sys.exit()
@@ -42,8 +47,7 @@ if sys.argv[1]=="add":
 
         tasks.append(new_task)
         print("追加しました")
-        with open("tasks.json", "w", encoding="utf-8") as f:
-            json.dump(tasks, f, ensure_ascii=False)
+        save_tasks(tasks)
 
 elif sys.argv[1]=="list":
 
@@ -71,8 +75,7 @@ elif sys.argv[1]=="done":
         for task in tasks:
             if str(task["id"])==sys.argv[2]:
                 task["done"]=True
-                with open("tasks.json", "w", encoding="utf-8") as f:
-                    json.dump(tasks, f, ensure_ascii=False)
+                save_tasks(tasks)
                 print("完了にしました")
                 found=True
 
@@ -98,8 +101,7 @@ elif sys.argv[1]=="delete":
                 new_tasks.append(task)
 
         if found==True:
-            with open("tasks.json", "w", encoding="utf-8") as f:
-                json.dump(new_tasks, f, ensure_ascii=False)
+            save_tasks(new_tasks)
             print("削除しました")
 
         else:
