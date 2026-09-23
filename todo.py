@@ -6,18 +6,30 @@ from datetime import datetime
 def load_tasks():
     if os.path.exists("tasks.json"):
             with open("tasks.json", "r", encoding="utf-8") as f:
-                tasks = json.load(f)
+                try:
+                    tasks = json.load(f)
+                    if not isinstance(tasks, list):
+                        raise ValueError
+                    
+                except (json.JSONDecodeError, ValueError):
+                    print("tasks.jsonの中身が壊れています")
+                    sys.exit()
             return tasks
 
     else:
         tasks=[]
         return tasks
 
+if len(sys.argv)<2:
+    print("コマンドがありません。add / list / done / delete のいずれかを指定してください")
+    sys.exit()
+
+
 if sys.argv[1]=="add":
 
     tasks=load_tasks()
 
-    if len(sys.argv)<3:
+    if len(sys.argv)<3 or " ".join(sys.argv[2:]).strip()=="":
         print("内容を入力してください")
 
     else:
@@ -51,17 +63,21 @@ elif sys.argv[1]=="done":
 
     tasks=load_tasks()
 
-    found=False
-    for task in tasks:
-        if str(task["id"])==sys.argv[2]:
-            task["done"]=True
-            with open("tasks.json", "w", encoding="utf-8") as f:
-                json.dump(tasks, f, ensure_ascii=False)
-            print("完了にしました")
-            found=True
+    if len(sys.argv)<3:
+            print("idを入力してください")
 
-    if found==False:
-        print("該当するタスクがありません")
+    else:
+        found=False
+        for task in tasks:
+            if str(task["id"])==sys.argv[2]:
+                task["done"]=True
+                with open("tasks.json", "w", encoding="utf-8") as f:
+                    json.dump(tasks, f, ensure_ascii=False)
+                print("完了にしました")
+                found=True
+
+        if found==False:
+            print("該当するタスクがありません")
 
 elif sys.argv[1]=="delete":
 
@@ -69,17 +85,26 @@ elif sys.argv[1]=="delete":
 
     new_tasks=[] 
     found=False
-    for task in tasks:
-        if str(task["id"])==sys.argv[2]:
-            found=True
+
+    if len(sys.argv)<3:
+                print("idを入力してください")
+
+    else:            
+        for task in tasks:
+            if str(task["id"])==sys.argv[2]:
+                found=True
+
+            else:
+                new_tasks.append(task)
+
+        if found==True:
+            with open("tasks.json", "w", encoding="utf-8") as f:
+                json.dump(new_tasks, f, ensure_ascii=False)
+            print("削除しました")
 
         else:
-            new_tasks.append(task)
+            print("該当するタスクがありません")
 
-    if found==True:
-        with open("tasks.json", "w", encoding="utf-8") as f:
-            json.dump(new_tasks, f, ensure_ascii=False)
-        print("削除しました")
-
-    else:
-        print("該当するタスクがありません")
+else:
+    print("そのコマンドは無効です")
+    sys.exit()
