@@ -22,7 +22,7 @@ if sys.argv[1]=="add":
 
     else:
         new_task={
-            "id": len(tasks) + 1 ,
+            "id": max((task["id"] for task in tasks) , default=0)+1 ,
             "content": " ".join(sys.argv[2:]) ,
             "done": False ,
             "created_at": str(datetime.now())
@@ -61,4 +61,25 @@ elif sys.argv[1]=="done":
             found=True
 
     if found==False:
+        print("該当するタスクがありません")
+
+elif sys.argv[1]=="delete":
+
+    tasks=load_tasks() 
+
+    new_tasks=[] 
+    found=False
+    for task in tasks:
+        if str(task["id"])==sys.argv[2]:
+            found=True
+
+        else:
+            new_tasks.append(task)
+
+    if found==True:
+        with open("tasks.json", "w", encoding="utf-8") as f:
+            json.dump(new_tasks, f, ensure_ascii=False)
+        print("削除しました")
+
+    else:
         print("該当するタスクがありません")
