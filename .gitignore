@@ -1,1 +1,5 @@
 tasks.json
+test_tasks.json
+.venv
+__pycache__
+.pytest_cache

@@ -3,9 +3,9 @@ import json
 import os
 from datetime import datetime
 
-def load_tasks():
-    if os.path.exists("tasks.json"):
-            with open("tasks.json", "r", encoding="utf-8") as f:
+def load_tasks(filename="tasks.json"):
+    if os.path.exists(filename):
+            with open(filename, "r", encoding="utf-8") as f:
                 try:
                     tasks = json.load(f)
                     if not isinstance(tasks, list):
@@ -20,12 +20,12 @@ def load_tasks():
         tasks=[]
         return tasks
 
-def save_tasks(tasks):
-    with open("tasks.json", "w", encoding="utf-8") as f:
+def save_tasks(tasks, filename="tasks.json"):
+    with open(filename, "w", encoding="utf-8") as f:
         json.dump(tasks, f, ensure_ascii=False)
 
-def list_tasks():
-    tasks=load_tasks()         
+def list_tasks(filename="tasks.json"):
+    tasks=load_tasks(filename)         
 
     if len(tasks)==0:
         print("タスクはありません")
@@ -37,8 +37,8 @@ def list_tasks():
             else:
                 print(str(task["id"]) + ". " + task["content"] + " [未完了]")
 
-def add_task(content):
-    tasks=load_tasks()
+def add_task(content, filename="tasks.json"):
+    tasks=load_tasks(filename)
     
     if content.strip()=="":
             print("内容を入力してください")
@@ -53,24 +53,24 @@ def add_task(content):
     
         tasks.append(new_task)
         print("追加しました")
-        save_tasks(tasks)
+        save_tasks(tasks, filename)
 
-def done_task(task_id):
-    tasks=load_tasks()
+def done_task(task_id, filename="tasks.json"):
+    tasks=load_tasks(filename)
 
     found=False
     for task in tasks:
         if str(task["id"])==task_id:
             task["done"]=True
-            save_tasks(tasks)
+            save_tasks(tasks, filename)
             print("完了にしました")
             found=True
 
     if found==False:
         print("該当するタスクがありません")     
 
-def delete_task(task_id):
-    tasks=load_tasks() 
+def delete_task(task_id, filename="tasks.json"):
+    tasks=load_tasks(filename) 
 
     new_tasks=[] 
     found=False
@@ -82,37 +82,38 @@ def delete_task(task_id):
             new_tasks.append(task)
 
     if found==True:
-        save_tasks(new_tasks)
+        save_tasks(new_tasks, filename)
         print("削除しました")
 
     else:
         print("該当するタスクがありません")
    
+if __name__ == "__main__":
 
-if len(sys.argv)<2:
-    print("コマンドがありません。add / list / done / delete のいずれかを指定してください")
-    sys.exit()
+    if len(sys.argv)<2:
+        print("コマンドがありません。add / list / done / delete のいずれかを指定してください")
+        sys.exit()
 
-if sys.argv[1]=="add":
-    add_task(" ".join(sys.argv[2:]))
+    if sys.argv[1]=="add":
+        add_task(" ".join(sys.argv[2:]))
 
-elif sys.argv[1]=="list":
-    list_tasks()
+    elif sys.argv[1]=="list":
+        list_tasks()
 
-elif sys.argv[1]=="done":
-    if len(sys.argv)<3:
-        print("idを入力してください")
+    elif sys.argv[1]=="done":
+        if len(sys.argv)<3:
+            print("idを入力してください")
+
+        else:
+            done_task(sys.argv[2])
+
+    elif sys.argv[1]=="delete":
+        if len(sys.argv)<3:
+            print("idを入力してください")
+
+        else:            
+            delete_task(sys.argv[2])
 
     else:
-        done_task(sys.argv[2])
-
-elif sys.argv[1]=="delete":
-    if len(sys.argv)<3:
-        print("idを入力してください")
-
-    else:            
-        delete_task(sys.argv[2])
-
-else:
-    print("そのコマンドは無効です")
-    sys.exit()
+        print("そのコマンドは無効です")
+        sys.exit()
