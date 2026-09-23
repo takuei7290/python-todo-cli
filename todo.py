@@ -17,16 +17,21 @@ if sys.argv[1]=="add":
 
     tasks=load_tasks()
 
-    new_task={
-        "id": len(tasks) + 1 ,
-        "content": sys.argv[2] ,
-        "done": False ,
-        "created_at": str(datetime.now())
-    }
+    if len(sys.argv)<3:
+        print("内容を入力してください")
 
-    tasks.append(new_task)
-    with open("tasks.json", "w", encoding="utf-8") as f:
-        json.dump(tasks, f, ensure_ascii=False)
+    else:
+        new_task={
+            "id": len(tasks) + 1 ,
+            "content": " ".join(sys.argv[2:]) ,
+            "done": False ,
+            "created_at": str(datetime.now())
+        }
+
+        tasks.append(new_task)
+        print("追加しました")
+        with open("tasks.json", "w", encoding="utf-8") as f:
+            json.dump(tasks, f, ensure_ascii=False)
 
 elif sys.argv[1]=="list":
 
