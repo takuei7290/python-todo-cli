@@ -2,6 +2,7 @@ import sys
 import json
 import os
 from datetime import datetime
+import argparse
 
 def load_tasks(filename="tasks.json"):
     if os.path.exists(filename):
@@ -90,30 +91,30 @@ def delete_task(task_id, filename="tasks.json"):
    
 if __name__ == "__main__":
 
-    if len(sys.argv)<2:
-        print("コマンドがありません。add / list / done / delete のいずれかを指定してください")
-        sys.exit()
+    parser = argparse.ArgumentParser(description="ToDoを管理するCLIツール")
+    subparsers = parser.add_subparsers(dest="command", required=True)
 
-    if sys.argv[1]=="add":
-        add_task(" ".join(sys.argv[2:]))
+    add_parser = subparsers.add_parser("add", help="タスクを追加する")
+    add_parser.add_argument("content", nargs="+", help="タスクの内容")
 
-    elif sys.argv[1]=="list":
+    subparsers.add_parser("list", help="タスクの一覧を表示する")
+
+    done_parser = subparsers.add_parser("done", help="タスクを完了にする")
+    done_parser.add_argument("task_id", help="完了にするタスクのid")
+
+    delete_parser = subparsers.add_parser("delete", help="タスクを削除する")
+    delete_parser.add_argument("task_id", help="削除するタスクのid")
+
+    args = parser.parse_args()
+
+    if args.command=="add":
+        add_task(" ".join(args.content))
+
+    elif args.command=="list":
         list_tasks()
 
-    elif sys.argv[1]=="done":
-        if len(sys.argv)<3:
-            print("idを入力してください")
+    elif args.command=="done":
+        done_task(args.task_id)
 
-        else:
-            done_task(sys.argv[2])
-
-    elif sys.argv[1]=="delete":
-        if len(sys.argv)<3:
-            print("idを入力してください")
-
-        else:            
-            delete_task(sys.argv[2])
-
-    else:
-        print("そのコマンドは無効です")
-        sys.exit()
+    elif args.command=="delete":
+        delete_task(args.task_id)
