@@ -1,0 +1,6 @@
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[tool.ruff.lint]
+ignore = ["DTZ005"]
+extend-select = ["E712"]
