@@ -1,8 +1,9 @@
-import sys
+import argparse
 import json
 import os
+import sys
 from datetime import datetime
-import argparse
+
 
 def load_tasks(filename="tasks.json"):
     if os.path.exists(filename):
@@ -10,9 +11,9 @@ def load_tasks(filename="tasks.json"):
                 try:
                     tasks = json.load(f)
                     if not isinstance(tasks, list):
-                        raise ValueError
+                        raise TypeError
                     
-                except (json.JSONDecodeError, ValueError):
+                except (json.JSONDecodeError, TypeError):
                     print("tasks.jsonの中身が壊れています")
                     sys.exit()
             return tasks

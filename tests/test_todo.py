@@ -1,6 +1,9 @@
-from todo import add_task, load_tasks, done_task, delete_task, list_tasks
 import os
+
 import pytest
+
+from todo import add_task, delete_task, done_task, list_tasks, load_tasks
+
 
 @pytest.fixture
 def clean_test_file():
