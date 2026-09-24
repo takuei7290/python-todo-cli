@@ -1,2 +1,3 @@
 [lint]
 ignore = ["DTZ005"]
+extend-select = ["E712"]
