@@ -35,14 +35,14 @@ def test_done_task(clean_test_file):
     add_task("テストタスク", "test_tasks.json")
     done_task("1", "test_tasks.json")
     tasks = load_tasks("test_tasks.json")
-    assert tasks[0]["done"] == True
+    assert tasks[0]["done"] is True
 
 
 def test_done_task_not_found(clean_test_file):
     add_task("テストタスク", "test_tasks.json")
     done_task("2", "test_tasks.json")
     tasks = load_tasks("test_tasks.json")
-    assert tasks[0]["done"] == False
+    assert tasks[0]["done"] is False
 
 
 def test_delete_task(clean_test_file):

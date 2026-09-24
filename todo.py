@@ -36,7 +36,7 @@ def list_tasks(filename="tasks.json"):
 
     else:
         for task in tasks:
-            if task["done"] == True:
+            if task["done"]:
                 print(str(task["id"]) + ". " + task["content"] + " [完了]")
             else:
                 print(str(task["id"]) + ". " + task["content"] + " [未完了]")
@@ -72,7 +72,7 @@ def done_task(task_id, filename="tasks.json"):
             print("完了にしました")
             found = True
 
-    if found == False:
+    if not found:
         print("該当するタスクがありません")
 
 
@@ -88,7 +88,7 @@ def delete_task(task_id, filename="tasks.json"):
         else:
             new_tasks.append(task)
 
-    if found == True:
+    if found:
         save_tasks(new_tasks, filename)
         print("削除しました")
 
