@@ -73,3 +73,15 @@ def test_list_tasks_done(clean_test_file, capsys):
     list_tasks("test_tasks.json")
     output = capsys.readouterr().out
     assert "[完了]" in output
+
+def test_load_tasks_broken_json(clean_test_file):
+    with open("test_tasks.json", "w", encoding="utf-8") as f:
+        f.write("これはJSONではない")
+    with pytest.raises(SystemExit):
+        load_tasks("test_tasks.json")
+
+def test_load_tasks_not_list(clean_test_file):
+    with open("test_tasks.json", "w", encoding="utf-8") as f:
+        f.write("{}")
+    with pytest.raises(SystemExit):
+        load_tasks("test_tasks.json")
