@@ -96,7 +96,7 @@ def delete_task(task_id, filename="tasks.json"):
         print("該当するタスクがありません")
 
 
-if __name__ == "__main__":
+def build_parser():
     parser = argparse.ArgumentParser(description="ToDoを管理するCLIツール")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -111,6 +111,11 @@ if __name__ == "__main__":
     delete_parser = subparsers.add_parser("delete", help="タスクを削除する")
     delete_parser.add_argument("task_id", help="削除するタスクのid")
 
+    return parser
+
+
+if __name__ == "__main__":
+    parser = build_parser()
     args = parser.parse_args()
 
     if args.command == "add":

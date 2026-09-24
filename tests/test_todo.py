@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from todo import add_task, delete_task, done_task, list_tasks, load_tasks
+from todo import add_task, build_parser, delete_task, done_task, list_tasks, load_tasks
 
 
 @pytest.fixture
@@ -101,3 +101,41 @@ def test_load_tasks_not_list(clean_test_file):
         f.write("{}")
     with pytest.raises(SystemExit):
         load_tasks("test_tasks.json")
+
+
+def test_parser_no_command():
+    parser = build_parser()
+    with pytest.raises(SystemExit):
+        parser.parse_args([])
+
+
+def test_parser_unknown_command():
+    parser = build_parser()
+    with pytest.raises(SystemExit):
+        parser.parse_args(["unknown"])
+
+
+def test_parser_done():
+    parser = build_parser()
+    args = parser.parse_args(["done", "1"])
+    assert args.command == "done"
+    assert args.task_id == "1"
+
+
+def test_parser_done_without_id():
+    parser = build_parser()
+    with pytest.raises(SystemExit):
+        parser.parse_args(["done"])
+
+
+def test_parser_add():
+    parser = build_parser()
+    args = parser.parse_args(["add", "テスト", "をする"])
+    assert args.command == "add"
+    assert args.content == ["テスト", "をする"]
+
+
+def test_parser_add_without_content():
+    parser = build_parser()
+    with pytest.raises(SystemExit):
+        parser.parse_args(["add"])
