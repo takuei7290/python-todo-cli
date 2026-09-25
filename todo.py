@@ -25,7 +25,7 @@ def load_tasks(filename="tasks.json"):
 
 def save_tasks(tasks, filename="tasks.json"):
     with open(filename, "w", encoding="utf-8") as f:
-        json.dump(tasks, f, ensure_ascii=False)
+        json.dump(tasks, f, ensure_ascii=False, indent=2)
 
 
 def list_tasks(filename="tasks.json"):
