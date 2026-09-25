@@ -37,9 +37,9 @@ def list_tasks(filename="tasks.json"):
     else:
         for task in tasks:
             if task["done"]:
-                print(str(task["id"]) + ". " + task["content"] + " [完了]")
+                print(f"{task['id']}. {task['content']} [完了]")
             else:
-                print(str(task["id"]) + ". " + task["content"] + " [未完了]")
+                print(f"{task['id']}. {task['content']} [未完了]")
 
 
 def add_task(content, filename="tasks.json"):
