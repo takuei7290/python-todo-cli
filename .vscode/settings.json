@@ -1,3 +1,15 @@
 {
-  "cSpell.words": ["capsys", "pycache", "pytest", "pythonpath", "venv"]
+  "cSpell.words": [
+    "capsys",
+    "colorama",
+    "iniconfig",
+    "oneline",
+    "pluggy",
+    "pycache",
+    "Pygments",
+    "pytest",
+    "pythonpath",
+    "takuei",
+    "venv"
+  ]
 }
