@@ -1,5 +1,7 @@
 # python-todo-cli
 
+[![CI](https://github.com/takuei7290/python-todo-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/takuei7290/python-todo-cli/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE) ![Python 3.12](https://img.shields.io/badge/python-3.12-3776AB)
+
 コマンドラインでタスクを管理するシンプルなToDoツールです。
 Pythonの基礎、テスト、Git/GitHubのブランチ運用を学ぶために作成しました。
 
